@@ -3,13 +3,15 @@ import 'dart:math';
 import 'package:todo_list/base/base_bloc.dart';
 import 'package:todo_list/base/base_event.dart';
 import 'package:todo_list/database/todo_table.dart';
+import 'package:todo_list/repository/todo_repo.dart';
 import '../model/todo.dart';
 import '../event/add_todo_event.dart';
 import '../event/delete_todo_event.dart';
 
 // làm các chức năng và chứa tài nguyên
 class TodoBloc extends BaseBloc {
-  TodoTable _todoTable = TodoTable();// database
+  TodoRepo _todoRepo = new TodoRepo();
+  TodoTable _todoTable = TodoTable(); // database
 
   final StreamController<List<Todo>> _todoListStreamController =
       StreamController<List<Todo>>();
@@ -20,12 +22,13 @@ class TodoBloc extends BaseBloc {
   List<Todo> _todoListData = []; // khởt tạo list ra
 
   initData() async {
+    var data = await _todoRepo.initData();
     _todoListData = await _todoTable.selectAllTodo();
-    if (_todoListData == null) {
-      return;
-    } else {
-      getTodoListSick.add(_todoListData);
-    }
+    getTodoListSick.add(data);
+    // if (_todoListData == null) {
+    //   return;
+    // } else {
+    // }
   }
 
   _addTodo(Todo todo) async {
