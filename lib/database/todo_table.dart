@@ -11,7 +11,7 @@ class TodoTable {
       content TEXT
     );
   ''';
-  static const BROP_TABLE_QUERY = ''' 
+  static const DROP_TABLE_QUERY = ''' 
      DROP TABLE IF EXISTS $TABLE_NAME
   ''';
   Future<int> insertTodo(Todo todo) {

@@ -7,9 +7,9 @@ import '../model/todo.dart';
 import '../event/add_todo_event.dart';
 import '../event/delete_todo_event.dart';
 
-// làm các chức năng
+// làm các chức năng và chứa tài nguyên
 class TodoBloc extends BaseBloc {
-  TodoTable _todoTable = TodoTable();
+  TodoTable _todoTable = TodoTable();// database
 
   final StreamController<List<Todo>> _todoListStreamController =
       StreamController<List<Todo>>();
@@ -17,7 +17,7 @@ class TodoBloc extends BaseBloc {
   Sink<List<Todo>> get getTodoListSick => _todoListStreamController.sink;
 
   final _randomInt = Random();
-  List<Todo> _todoListData = <Todo>[];
+  List<Todo> _todoListData = []; // khởt tạo list ra
 
   initData() async {
     _todoListData = await _todoTable.selectAllTodo();
@@ -33,24 +33,25 @@ class TodoBloc extends BaseBloc {
     await _todoTable.insertTodo(todo);
 
     _todoListData.add(todo);
-    getTodoListSick.add(_todoListData); // lấy dử liệu lại
+    getTodoListSick.add(_todoListData); // đẩy event vào
   }
 
   _deleteTodo(Todo todo) async {
     await _todoTable.deleteTodo(todo);
 
     _todoListData.remove(todo);
-    getTodoListSick.add(_todoListData);
+    getTodoListSick.add(_todoListData); // đẩy event vào
   }
 
   @override
   void dispatchEvent(BaseEvent event) {
     if (event is AddTodoEvent) {
-      Todo todo = Todo.fromData(_randomInt.nextInt(1000000), event.content);
-      _addTodo(todo);
+      Todo todo = Todo.fromData(_randomInt.nextInt(1000000),
+          event.content); //create  1 instance then add
+      _addTodo(todo); // add instance to List
       print(_todoListData.toString());
     } else if (event is DeleteTodoEvent) {
-      _deleteTodo(event.todo);
+      _deleteTodo(event.todo); // xoá từng đối tượng cụ thể
     }
   }
 

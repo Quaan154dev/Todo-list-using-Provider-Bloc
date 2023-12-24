@@ -9,7 +9,8 @@ class TodoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var txtTodoController = TextEditingController();
-    var bloc = Provider.of<TodoBloc>(context);
+    var bloc = Provider.of<TodoBloc>(
+        context); // giống khởi tạo để truy cập 1 class thế
     return Row(
       children: [
         Expanded(

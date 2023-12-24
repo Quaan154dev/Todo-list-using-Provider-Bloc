@@ -17,15 +17,11 @@ class TodoDatabase {
   Database? get database => _database;
 
   init() async {
-    _database = await openDatabase(
-      join(await getDatabasesPath(), DB_NAME),
-      onCreate: (db, version) {
-        initScripts.forEach((script) async => await db.execute(script));
-      },
-      onUpgrade: (db, oldVersion, newVersion) {
-        migrationScripts.forEach((script) async => await db.execute(script));
-      },
-      version: DB_VERSION,
-    );
+    _database = await openDatabase(join(await getDatabasesPath(), DB_NAME),
+        onCreate: (db, version) {
+      initScripts.forEach((script) async => await db.execute(script));
+    }, onUpgrade: (db, oldVersion, newVersion) {
+      migrationScripts.forEach((script) async => await db.execute(script));
+    }, version: DB_VERSION);
   }
 }

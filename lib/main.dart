@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import './database/todo_database.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await TodoDatabase.instance.init();
   runApp(const MyApp());
 }

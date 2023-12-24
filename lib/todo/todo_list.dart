@@ -24,17 +24,16 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Consumer<TodoBloc>(
       builder: (context, bloc, child) => StreamBuilder<List<Todo>>(
-        stream: bloc.getTodoListStream,
+        initialData: const [], // giá trị ban đầu
+        stream: bloc.getTodoListStream, // để xác định đúng stream để đổ dử liệu
         builder: (context, snapshot) {
           return ListView.builder(
-            itemCount:
-                snapshot.data?.length, //snapshot.data chính là cái <List<Todo>>
+            itemCount: snapshot.data
+                ?.length, //snapshot.data chính là cái <List<Todo>> , snapshot chính là dử liệu nhận từ stream
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(
-                  snapshot.data?[index].getcontent ?? "",
-                  style: const TextStyle(fontSize: 20),
-                ),
+                title: Text(snapshot.data?[index].getcontent ?? "",
+                    style: const TextStyle(fontSize: 20)),
                 trailing: GestureDetector(
                   onTap: () {
                     bloc.getevent.add(DeleteTodoEvent(snapshot.data![index]));
